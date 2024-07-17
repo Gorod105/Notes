@@ -11,18 +11,33 @@ public class NoteService {
 
     private final List<Note> notes = new ArrayList<>();
 
-    public List<Note> listAll(){
+    {
+        for (long i = 0; i < 10; i++) {
+
+            notes.add(Note.builder()
+                    .id(i)
+                    .title("title" + i)
+                    .content("content" + i)
+                    .build());
+        }
+    }
+
+    public List<Note> listAll() {
+
         return notes;
     }
-    public Note add(Note note){
-        note.setId( notes.getLast().getId()+1);
+
+    public Note add(Note note) {
+        note.setId(notes.getLast().getId() + 1);
         notes.add(note);
         return note;
     }
-    public void deleteById(long id){
+
+    public void deleteById(long id) {
         notes.remove((int) id);
     }
-    public void update(Note note){
+
+    public void update(Note note) {
         try {
             Note oldNote = notes.get(Math.toIntExact(note.getId()));
             oldNote.setTitle(note.getTitle());
@@ -31,7 +46,8 @@ public class NoteService {
             throw new IllegalArgumentException(e);
         }
     }
-    public Note getById(long id){
+
+    public Note getById(long id) {
         return notes.get((int) id);
     }
 }
