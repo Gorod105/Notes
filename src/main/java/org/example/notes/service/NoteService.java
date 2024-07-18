@@ -3,6 +3,7 @@ package org.example.notes.service;
 import org.example.notes.dao.model.Note;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class NoteService {
     private final List<Note> notes = new ArrayList<>();
 
     {
-        for (long i = 0; i < 10; i++) {
+        for (long i = 1; i < 11; i++) {
 
             notes.add(Note.builder()
                     .id(i)
@@ -34,7 +35,8 @@ public class NoteService {
     }
 
     public void deleteById(long id) {
-        notes.remove((int) id);
+        notes.removeIf(note -> note.getId().equals(id));
+
     }
 
     public void update(Note note) {
@@ -48,6 +50,6 @@ public class NoteService {
     }
 
     public Note getById(long id) {
-        return notes.get((int) id);
+        return notes.get((int) id - 1);
     }
 }

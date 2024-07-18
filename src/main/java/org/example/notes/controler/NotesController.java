@@ -15,17 +15,39 @@ public class NotesController {
 
     private final NoteService noteService;
 
-    @PostMapping("/edit")
-    public ModelAndView edit(@RequestParam Long id) {
-        ModelAndView modelAndView = new ModelAndView("editPage");
-//        noteService.deleteById(id);
+    @PostMapping("/add")
+    public ModelAndView showAddPage() {
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("action", "add");
         return modelAndView;
     }
-    @PostMapping("/delete")
-    public ModelAndView delete(@RequestParam Long id ) {
+    @PostMapping("/add/send")
+    public String add(@RequestParam String title, @RequestParam String content) {
+        Note newNote = Note.builder()
+                .title(title)
+                .content(content)
+                .build();
+        noteService.add(newNote);
+        return "redirect:/";
+    }
+    @PostMapping("/edit")
+    public ModelAndView showEditPage(@RequestParam Long id) {
         ModelAndView modelAndView = new ModelAndView("index");
-        noteService.deleteById(id);
+        modelAndView.addObject("action", "edit");
+        modelAndView.addObject("noteShow", noteService.getById(id));
         return modelAndView;
+    }
+    @PostMapping("/edit/send")
+    public String edit(@RequestParam Long id , @RequestParam String title, @RequestParam String content) {
+        Note note = noteService.getById(id);
+        note.setTitle(title);
+        note.setContent(content);
+        return "redirect:/";
+    }
+    @PostMapping("/delete")
+    public String delete(@RequestParam Long id ) {
+        noteService.deleteById(id);
+        return "redirect:/";
     }
 
     @GetMapping("/")
