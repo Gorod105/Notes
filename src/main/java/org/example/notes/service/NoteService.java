@@ -1,55 +1,50 @@
 package org.example.notes.service;
 
 import org.example.notes.dao.model.Note;
+import org.example.notes.repository.NoteRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class NoteService {
+    private final NoteRepository noteRepository;
 
-    private final List<Note> notes = new ArrayList<>();
-
-    {
-        for (long i = 1; i < 11; i++) {
-
-            notes.add(Note.builder()
-                    .id(i)
-                    .title("title" + i)
-                    .content("content" + i)
-                    .build());
-        }
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
     }
 
     public List<Note> listAll() {
 
-        return notes;
+        return noteRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    public Note add(Note note) {
-        note.setId(notes.getLast().getId() + 1);
-        notes.add(note);
-        return note;
+    public void save(Note note) {
+        noteRepository.save(note);
     }
 
     public void deleteById(long id) {
-        notes.removeIf(note -> note.getId().equals(id));
+        noteRepository.deleteById(id);
 
     }
-
-    public void update(Note note) {
+    @Transactional
+    public void update(Long id, String newTitle, String newContent) {
         try {
-            Note oldNote = notes.get(Math.toIntExact(note.getId()));
-            oldNote.setTitle(note.getTitle());
-            oldNote.setContent(note.getContent());
+            Note note = noteRepository.findById(id).orElseThrow();
+            if (!newTitle.isEmpty()){
+                note.setTitle(newTitle);
+            }
+            if (!newContent.isEmpty()){
+                note.setContent(newContent);
+            }
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     public Note getById(long id) {
-        return notes.get((int) id - 1);
+        return noteRepository.findById(id).orElseThrow();
     }
 }

@@ -27,7 +27,7 @@ public class NotesController {
                 .title(title)
                 .content(content)
                 .build();
-        noteService.add(newNote);
+        noteService.save(newNote);
         return "redirect:/";
     }
     @PostMapping("/edit")
@@ -39,9 +39,7 @@ public class NotesController {
     }
     @PostMapping("/edit/send")
     public String edit(@RequestParam Long id , @RequestParam String title, @RequestParam String content) {
-        Note note = noteService.getById(id);
-        note.setTitle(title);
-        note.setContent(content);
+        noteService.update(id,title,content);
         return "redirect:/";
     }
     @PostMapping("/delete")
