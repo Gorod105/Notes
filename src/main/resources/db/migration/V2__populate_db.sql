@@ -1,13 +1,8 @@
-INSERT INTO note (title, content)
-VALUES ('EAR', 'Earth'),
-       ('MAR', 'Mars'),
-       ('VEN', 'Venus'),
-       ('JUP', 'Jupiter'),
-       ('EAR', 'Earth'),
-       ('MAR', 'Mars'),
-       ('VEN', 'Venus'),
-       ('JUP', 'Jupiter'),
-       ('JUP', 'Jupiter'),
-       ('SAT', 'Saturn');
+INSERT INTO users (username, password)
+VALUES ('user', '$2a$12$T7hznuuBRICVDmFQOvwu7uxX4jClnG5drSNAaNAKMKfqG4Rf2hteK'),
+       ('admin', '$2a$12$T7hznuuBRICVDmFQOvwu7uxX4jClnG5drSNAaNAKMKfqG4Rf2hteK');
+INSERT INTO roles (name)
+VALUES ('ROLE_USER'),
+       ('ROLE_ADMIN');
 
 

@@ -1,6 +1,6 @@
 package org.example.notes.service;
 
-import org.example.notes.dao.model.Note;
+import org.example.notes.model.Note;
 import org.example.notes.repository.NoteRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,16 @@ public class NoteService {
 
     public List<Note> listAll() {
 
-        return noteRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        return noteRepository.findAll();
     }
 
-    public void save(Note note) {
+    public Long save(String title, String content) {
+        Note note = Note.builder()
+                .title(title)
+                .content(content)
+                .build();
         noteRepository.save(note);
+        return note.getId();
     }
 
     public void deleteById(long id) {
@@ -30,7 +35,7 @@ public class NoteService {
 
     }
     @Transactional
-    public void update(Long id, String newTitle, String newContent) {
+    public Note update(Long id, String newTitle, String newContent) {
         try {
             Note note = noteRepository.findById(id).orElseThrow();
             if (!newTitle.isEmpty()){
@@ -39,12 +44,10 @@ public class NoteService {
             if (!newContent.isEmpty()){
                 note.setContent(newContent);
             }
+            noteRepository.save(note);
+            return note;
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    public Note getById(long id) {
-        return noteRepository.findById(id).orElseThrow();
     }
 }
