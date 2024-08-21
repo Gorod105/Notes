@@ -1,4 +1,4 @@
-package org.example.notes.controler;
+package org.example.notes.controller;
 
 import lombok.RequiredArgsConstructor;
 

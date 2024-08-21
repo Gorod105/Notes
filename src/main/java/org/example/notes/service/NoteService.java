@@ -21,13 +21,13 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
-    public Long save(String title, String content) {
+    public Note save(String title, String content) {
         Note note = Note.builder()
                 .title(title)
                 .content(content)
                 .build();
         noteRepository.save(note);
-        return note.getId();
+        return note;
     }
 
     public void deleteById(long id) {

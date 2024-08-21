@@ -1,4 +1,4 @@
-package org.example.notes.controler;
+package org.example.notes.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.notes.model.Note;
@@ -15,7 +15,7 @@ public class NotesController {
     private final NoteService noteService;
 
     @PostMapping("/add")
-    public Long add(@RequestBody NoteAddRequest request) {
+    public Note add(@RequestBody NoteAddRequest request) {
 
        return noteService.save(request.getTitle(), request.getContent());
     }
@@ -24,9 +24,8 @@ public class NotesController {
         return noteService.update(id, request.getTitle(), request.getContent());
     }
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable Long id ) {
+    public void delete(@PathVariable Long id ) {
         noteService.deleteById(id);
-        return "Deleted";
     }
 
     @GetMapping("/findAll")
